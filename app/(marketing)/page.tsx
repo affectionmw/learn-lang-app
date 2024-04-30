@@ -32,8 +32,8 @@ export default function Home() {
                             </SignInButton>
                         </SignedOut>
                         <SignedIn>
-                            <Button size={"lg"} variant='secondary' className='w-full' asChild>
-                                <Link href={"/learn"}>Продолжить изучение</Link>
+                            <Button size='lg' variant='secondary' className='w-full' asChild>
+                                <Link href='/learn'>Продолжить изучение</Link>
                             </Button>
                         </SignedIn>
                     </ClerkLoaded>

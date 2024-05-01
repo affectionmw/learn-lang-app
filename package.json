@@ -17,8 +17,10 @@
         "@radix-ui/react-dialog": "^1.0.5",
         "@radix-ui/react-progress": "^1.0.3",
         "@radix-ui/react-slot": "^1.0.2",
+        "add": "^2.0.6",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
+        "dialog": "^0.3.1",
         "dotenv": "^16.4.5",
         "drizzle-orm": "^0.30.9",
         "lucide-react": "^0.376.0",
@@ -27,9 +29,11 @@
         "react": "^18",
         "react-circular-progressbar": "^2.1.0",
         "react-dom": "^18",
+        "shadcn-ui": "^0.8.0",
         "sonner": "^1.4.41",
         "tailwind-merge": "^2.3.0",
-        "tailwindcss-animate": "^1.0.7"
+        "tailwindcss-animate": "^1.0.7",
+        "zustand": "^4.5.2"
     },
     "devDependencies": {
         "@types/node": "^20",

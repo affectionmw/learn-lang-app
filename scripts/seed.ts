@@ -119,6 +119,12 @@ const main = async () => {
             },
         ]);
 
+        await db.insert(schema.challenges).values([
+            { id: 4, lessonId: 2, type: "SELECT", order: 1, question: 'Кого из них называют "человек"?' },
+            { id: 5, lessonId: 2, type: "ASSIST", order: 2, question: '"человек"' },
+            { id: 6, lessonId: 2, type: "SELECT", order: 3, question: 'Кого из них называют "робот"?' },
+        ]);
+
         console.log("Сидирование завершено");
     } catch (error) {
         console.error(error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { challengeOptions, challenges, lessons } from "@/db/schema";
+import { challengeOptions, challenges } from "@/db/schema";
 import { useState, useTransition } from "react";
 import { Header } from "@/app/lesson/header";
 import { QuestionBubble } from "@/app/lesson/question-bubble";
@@ -9,11 +9,13 @@ import { Footer } from "@/app/lesson/footer";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { toast } from "sonner";
 import { reduceHearts } from "@/actions/user-progress";
-import { useAudio, useWindowSize } from "react-use";
+import { useAudio, useWindowSize, useMount } from "react-use";
 import Image from "next/image";
 import { ResultCard } from "@/app/lesson/result-card";
 import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
+import { useHeartsModal } from "@/store/use-hearts-modal";
+import { usePracticeModal } from "@/store/use-practice-modal";
 
 type Props = {
     initialPercentage: number;
@@ -35,6 +37,14 @@ export const Quiz = ({
 }: Props) => {
     const router = useRouter();
     const { width, height } = useWindowSize();
+    const { open: openHeartsModal } = useHeartsModal();
+    const { open: openPracticeModal } = usePracticeModal();
+
+    useMount(() => {
+        if (initialPercentage === 100) {
+            openPracticeModal();
+        }
+    });
 
     const [finishAudio] = useAudio({ src: "/finish.mp3", autoPlay: true });
     const [correctAudio, _c, correctControls] = useAudio({ src: "/correct.wav" });
@@ -43,7 +53,9 @@ export const Quiz = ({
 
     const [lessonId] = useState(initialLessonId);
     const [hearts, setHearts] = useState(initialHearts);
-    const [percentage, setPercentage] = useState(initialPercentage);
+    const [percentage, setPercentage] = useState(() => {
+        return initialPercentage === 100 ? 0 : initialPercentage;
+    });
     const [challenges] = useState(initialLessonChallenges);
     const [activeIndex, setActiveIndex] = useState(() => {
         const uncompletedIndex = challenges.findIndex((challenge) => !challenge.completed);
@@ -116,7 +128,7 @@ export const Quiz = ({
                 upsertChallengeProgress(challenge.id)
                     .then((response) => {
                         if (response?.error === "hearts") {
-                            console.error("Недостаточно сердец");
+                            openHeartsModal();
                             return;
                         }
 
@@ -136,7 +148,7 @@ export const Quiz = ({
                 reduceHearts(challenge.id)
                     .then((response) => {
                         if (response?.error === "hearts") {
-                            console.error("Недостаточно сердец");
+                            openHeartsModal();
                             return;
                         }
 

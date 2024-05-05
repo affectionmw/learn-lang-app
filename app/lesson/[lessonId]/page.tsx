@@ -3,8 +3,14 @@ import { getLesson, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Quiz } from "@/app/lesson/quiz";
 
-const LessonIdPage = async () => {
-    const lessonReq = getLesson();
+type Props = {
+    params: {
+        lessonId: number;
+    };
+};
+
+const LessonIdPage = async ({ params }: Props) => {
+    const lessonReq = getLesson(params.lessonId);
     const userProgressReq = getUserProgress();
 
     const [lesson, userProgress] = await Promise.all([lessonReq, userProgressReq]);

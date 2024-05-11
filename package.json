@@ -33,6 +33,7 @@
         "react-use": "^17.5.0",
         "shadcn-ui": "^0.8.0",
         "sonner": "^1.4.41",
+        "stripe": "^15.6.0",
         "tailwind-merge": "^2.3.0",
         "tailwindcss-animate": "^1.0.7",
         "zustand": "^4.5.2"
@@ -43,7 +44,7 @@
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
-        "drizzle-kit": "^0.20.17",
+        "drizzle-kit": "^0.21.1",
         "eslint": "^8.57.0",
         "eslint-config-next": "14.2.3",
         "eslint-config-prettier": "^9.1.0",

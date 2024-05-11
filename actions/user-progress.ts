@@ -8,6 +8,9 @@ import { challengeProgress, challenges, userProgress } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { and, eq } from "drizzle-orm";
 
+// TODO: Вынести константу в отдельный файл
+const POINTS_TO_REFILL = 10;
+
 export const upsertUserProgress = async (courseId: number) => {
     const { userId } = await auth();
     const user = await currentUser();
@@ -104,4 +107,33 @@ export const reduceHearts = async (challengeId: number) => {
     revalidatePath("/quests");
     revalidatePath("/leaderboard");
     revalidatePath(`/lesson/${lessonId}`);
+};
+
+export const refillHearts = async () => {
+    const currentUserProgress = await getUserProgress();
+
+    if (!currentUserProgress) {
+        throw new Error("Прогресс пользователя не найден");
+    }
+
+    if (currentUserProgress.hearts === 5) {
+        throw new Error("Количество сердец уже максимально");
+    }
+
+    if (currentUserProgress.points < POINTS_TO_REFILL) {
+        throw new Error("Недостаточно очков");
+    }
+
+    await db
+        .update(userProgress)
+        .set({
+            hearts: 5,
+            points: currentUserProgress.points - POINTS_TO_REFILL,
+        })
+        .where(eq(userProgress.userId, currentUserProgress.userId));
+
+    revalidatePath("/shop");
+    revalidatePath("/learn");
+    revalidatePath("/quests");
+    revalidatePath("/leaderboard");
 };
